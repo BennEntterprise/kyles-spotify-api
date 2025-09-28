@@ -1,0 +1,18 @@
+{
+  "name": "kyles-spotify-api",
+  "version": "1.0.0",
+  "description": "A tool to extract BPM and song information from Spotify track links",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node test.js",
+    "demo": "node demo.js"
+  },
+  "keywords": ["spotify", "api", "bpm", "music", "track-info"],
+  "author": "Kyle",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.0"
+  }
+}

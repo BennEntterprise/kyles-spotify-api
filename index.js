@@ -70,12 +70,12 @@ async function processSpotifyTrack(url) {
     if (!clientId || !clientSecret) {
       console.log('\n💡 Setup Instructions:');
       console.log('1. Go to https://developer.spotify.com/dashboard/ and create an app');
-      console.log('2. Store the Client ID and Client Secret in your 1Password vault');
-      console.log('3. Update .env with the correct op:// vault references');
+      console.log('2. Store the Client ID and Client Secret in your Proton Pass vault');
+      console.log('3. Update .env with the correct pass:// vault references');
       console.log('4. Run:  npm run start:op');
-    } else if (clientId.startsWith('op://') || clientSecret.startsWith('op://')) {
-      console.log('\n💡 Credentials are unresolved 1Password vault references.');
-      console.log('   Run the tool via the 1Password CLI so secrets are injected at startup:');
+    } else if (clientId.startsWith('pass://') || clientSecret.startsWith('pass://')) {
+      console.log('\n💡 Credentials are unresolved Proton Pass vault references.');
+      console.log('   Run the tool via the Proton Pass CLI so secrets are injected at startup:');
       console.log('   npm run start:op');
     }
 

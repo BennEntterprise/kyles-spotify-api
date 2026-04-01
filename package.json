@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "start:op": "op run --env-file='.env' -- node index.js",
+    "start:op": "pass-cli run --env-file .env -- node index.js",
     "test": "node test.js",
-    "test:op": "op run --env-file='.env' -- node test.js",
+    "test:op": "pass-cli run --env-file .env -- node test.js",
     "demo": "node demo.js"
   },
   "keywords": [

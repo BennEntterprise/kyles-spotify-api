@@ -1,4 +1,5 @@
 node_modules/
-.env
 *.log
 .DS_Store
+# Keep .env tracked — it contains only 1Password vault references, not real secrets.
+# Real credentials are injected at runtime via `op run` (see README.md).

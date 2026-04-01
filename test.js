@@ -72,9 +72,16 @@ async function runTests() {
   
   // Test 4: Environment variables check
   console.log('\nTest 4: Environment variables check');
-  if (!process.env.SPOTIFY_CLIENT_ID || !process.env.SPOTIFY_CLIENT_SECRET) {
-    console.log('⚠️  SKIP: Spotify credentials not configured (this is expected)');
-    console.log('   To test API calls, create .env file with your Spotify credentials');
+  const clientId = process.env.SPOTIFY_CLIENT_ID;
+  const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
+  const isVaultRef = (v) => v && v.startsWith('op://');
+
+  if (!clientId || !clientSecret) {
+    console.log('⚠️  SKIP: Spotify credentials not configured');
+    console.log('   Run `npm run test:op` to inject credentials via 1Password CLI');
+  } else if (isVaultRef(clientId) || isVaultRef(clientSecret)) {
+    console.log('⚠️  SKIP: Credentials are unresolved 1Password vault references');
+    console.log('   Run `npm run test:op` so that `op run` resolves them before the process starts');
   } else {
     console.log('✅ PASS: Spotify credentials are configured');
     passed++;

@@ -22,42 +22,84 @@ npm install
 
 1. Go to [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/)
 2. Create a new app
-3. Copy your Client ID and Client Secret
+3. Note your **Client ID** and **Client Secret**
 
-### 3. Configure Environment
+### 3. Store Credentials in 1Password
 
-Create a `.env` file in the project root:
+This project uses the [1Password CLI](https://developer.1password.com/docs/cli/) (`op`) to inject
+secrets at runtime. The committed `.env` file holds vault *references* — not real values — so it is
+safe to commit.
+
+#### a. Install the 1Password CLI
+
+Follow the official guide: <https://developer.1password.com/docs/cli/get-started/>
 
 ```bash
-cp .env.example .env
+# macOS (Homebrew)
+brew install 1password-cli
+
+# Verify
+op --version
 ```
 
-Edit `.env` and add your credentials:
+#### b. Sign in
+
+```bash
+op signin
+```
+
+#### c. Create the 1Password item
+
+Store your Spotify credentials as a new item in 1Password. The vault reference format is:
 
 ```
-SPOTIFY_CLIENT_ID=your_client_id_here
-SPOTIFY_CLIENT_SECRET=your_client_secret_here
+op://<vault-name>/<item-name>/<field-name>
 ```
+
+Example (using the 1Password app or CLI):
+
+| Field | Value |
+|---|---|
+| Vault | `Personal` |
+| Item name | `Spotify API` |
+| Field `client_id` | `<your Spotify Client ID>` |
+| Field `client_secret` | `<your Spotify Client Secret>` |
+
+#### d. Configure `.env`
+
+The `.env` file is already committed with default vault references:
+
+```dotenv
+SPOTIFY_CLIENT_ID=op://Personal/Spotify API/client_id
+SPOTIFY_CLIENT_SECRET=op://Personal/Spotify API/client_secret
+```
+
+If your vault or item has a different name, update those references to match.
+Real credentials are **never** stored in `.env` — `op run` resolves them at runtime.
 
 ## Usage
 
-### Command Line
-
-Process a Spotify track URL:
+### Command Line (with 1Password CLI — recommended)
 
 ```bash
-npm start "https://open.spotify.com/track/3fzYU4CkE4pT5oo9GjMlTU?si=efae5ddf0408479b"
+npm run start:op "https://open.spotify.com/track/3fzYU4CkE4pT5oo9GjMlTU?si=efae5ddf0408479b"
 ```
 
-Or run with the default example URL:
+`op run` reads `.env`, resolves each `op://` reference against your vault, and injects the real
+values as environment variables for the duration of the process.
+
+### Command Line (manual `.env`)
+
+If you prefer not to use the 1Password CLI you can still run the tool by exporting credentials
+directly in your shell:
 
 ```bash
-npm start
+SPOTIFY_CLIENT_ID=<id> SPOTIFY_CLIENT_SECRET=<secret> npm start "https://open.spotify.com/track/..."
 ```
 
 ### Demo Mode
 
-To see example output without API credentials:
+To see example output without any credentials:
 
 ```bash
 npm run demo
@@ -155,10 +197,16 @@ Gets audio features including BPM.
 
 ## Testing
 
-Run the test suite:
+Run the test suite (URL parsing / error-handling tests — no credentials required):
 
 ```bash
 npm test
+```
+
+Run with live Spotify API calls via 1Password credential injection:
+
+```bash
+npm run test:op
 ```
 
 ## Audio Features Explained

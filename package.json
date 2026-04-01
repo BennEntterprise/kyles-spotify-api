@@ -5,14 +5,22 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "start:op": "op run --env-file='.env' -- node index.js",
     "test": "node test.js",
+    "test:op": "op run --env-file='.env' -- node test.js",
     "demo": "node demo.js"
   },
-  "keywords": ["spotify", "api", "bpm", "music", "track-info"],
+  "keywords": [
+    "spotify",
+    "api",
+    "bpm",
+    "music",
+    "track-info"
+  ],
   "author": "Kyle",
   "license": "MIT",
   "dependencies": {
-    "axios": "^1.6.0",
+    "axios": "^1.13.5",
     "dotenv": "^16.3.0"
   }
 }

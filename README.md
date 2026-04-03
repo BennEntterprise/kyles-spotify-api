@@ -1,14 +1,11 @@
 # Kyle's Spotify API
 
-A Node.js tool to extract detailed track information including BPM from Spotify track links.
+A Node.js tool to extract track information from Spotify track links.
 
 ## Features
 
-- 🎵 Extract track information from Spotify URLs
-- 🎶 Get BPM (tempo) and audio features
-- 🎹 Musical key and time signature
-- 📊 Audio characteristics (danceability, energy, etc.)
-- 🔗 Support for various Spotify URL formats
+- Extract track information from Spotify URLs
+- Support for various Spotify URL formats
 
 ## Setup
 
@@ -31,8 +28,6 @@ inject secrets at runtime. The committed `.env` file holds vault *references* �
 so it is safe to commit.
 
 #### a. Install the Proton Pass CLI
-
-Follow the official guide: <https://protonpass.github.io/pass-cli/>
 
 ```bash
 # macOS (Homebrew)
@@ -58,8 +53,6 @@ Store your Spotify credentials as a new item in Proton Pass. The vault reference
 ```
 pass://<vault-name>/<item-name>/<field-name>
 ```
-
-Example (using the Proton Pass app or CLI):
 
 | Field | Value |
 |---|---|
@@ -114,47 +107,27 @@ npm run demo
 🎵 Processing Spotify track...
 
 === TRACK INFORMATION ===
-Song: Example Song Name
-Artist(s): Artist Name
-Album: Album Name
-Duration: 3:45
-Popularity: 75/100
+Song: Example Track
+Artist(s): Sample Artist, Featured Artist
+Album: Sample Album
+Duration: 3:54
+Popularity: 78/100
 Explicit: No
 
-=== AUDIO FEATURES ===
-🎵 BPM (Tempo): 128
-🎹 Key: C Major
-🎼 Time Signature: 4/4
+🎧 Preview: https://p.scdn.co/mp3-preview/sample
 
-=== AUDIO CHARACTERISTICS (0.0 - 1.0) ===
-💃 Danceability: 0.756
-⚡ Energy: 0.845
-🎤 Speechiness: 0.045
-🎸 Acousticness: 0.123
-🎼 Instrumentalness: 0.000
-🎪 Liveness: 0.234
-😊 Valence (Positivity): 0.678
-🔊 Loudness: -5.2 dB
-
-🔗 Spotify Link: https://open.spotify.com/track/...
+🔗 Spotify Link: https://open.spotify.com/track/3fzYU4CkE4pT5oo9GjMlTU
 ```
 
 ### Programmatic Usage
 
 ```javascript
-const { processSpotifyTrack, SpotifyAPI } = require('./index');
+const { processSpotifyTrack } = require('./index');
 
-// Process a track URL
 const trackData = await processSpotifyTrack('https://open.spotify.com/track/...');
-
-// Or use the API class directly
-const spotify = new SpotifyAPI();
-const trackData = await spotify.getTrackData('https://open.spotify.com/track/...');
 ```
 
 ## Supported URL Formats
-
-The tool supports various Spotify track URL formats:
 
 - `https://open.spotify.com/track/3fzYU4CkE4pT5oo9GjMlTU`
 - `https://open.spotify.com/track/3fzYU4CkE4pT5oo9GjMlTU?si=...`
@@ -162,16 +135,14 @@ The tool supports various Spotify track URL formats:
 
 ## API Reference
 
-### SpotifyAPI Class
+### `SpotifyAPI`
 
 #### `getTrackData(url)`
-Returns comprehensive track information including BPM.
 
 **Parameters:**
 - `url` (string): Spotify track URL
 
 **Returns:**
-Object with track information and audio features:
 
 ```javascript
 {
@@ -180,12 +151,10 @@ Object with track information and audio features:
   artists: ["Artist Name"],
   album: "Album Name",
   duration_ms: 225000,
-  bpm: 128,
-  key: 0,
-  mode: 1,
-  danceability: 0.756,
-  energy: 0.845,
-  // ... more properties
+  explicit: false,
+  popularity: 78,
+  preview_url: "https://...",        // null if unavailable
+  external_urls: { spotify: "https://..." }
 }
 ```
 
@@ -193,10 +162,7 @@ Object with track information and audio features:
 Extracts the track ID from a Spotify URL.
 
 #### `getTrackInfo(trackId)`
-Gets basic track information.
-
-#### `getAudioFeatures(trackId)`
-Gets audio features including BPM.
+Gets track information from the Spotify `/v1/tracks/{id}` endpoint.
 
 ## Testing
 
@@ -211,20 +177,6 @@ Run with live Spotify API calls via Proton Pass credential injection:
 ```bash
 npm run test:op
 ```
-
-## Audio Features Explained
-
-- **BPM (Tempo)**: Beats per minute
-- **Key**: Musical key (0=C, 1=C#, etc.)
-- **Mode**: Major (1) or Minor (0)
-- **Danceability**: How suitable the track is for dancing
-- **Energy**: Perceptual measure of intensity and power
-- **Speechiness**: Presence of spoken words
-- **Acousticness**: Confidence the track is acoustic
-- **Instrumentalness**: Predicts if track contains no vocals
-- **Liveness**: Detects presence of audience
-- **Valence**: Musical positivity/happiness
-- **Loudness**: Overall loudness in decibels
 
 ## Error Handling
 

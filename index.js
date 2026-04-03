@@ -61,8 +61,16 @@ async function processSpotifyTrack(url) {
 // Main execution
 async function main() {
   // Get URL from command line arguments or use the example
-  const url = process.argv[2] || 'https://open.spotify.com/track/3fzYU4CkE4pT5oo9GjMlTU?si=efae5ddf0408479b';
+  const url = process.argv[2]; 
   
+  // Ensure the url exists and is valid for us to use, if not, exit the script 
+  if (!url) {
+    console.error('❌ No Spotify track URL provided. Please provide a URL as a command line argument.');
+    console.log('Usage: node index.js <spotify_track_url>');
+    process.exit(1);
+  }
+  
+
   console.log(`Processing URL: ${url}\n`);
   
   try {

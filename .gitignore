@@ -1,0 +1,5 @@
+node_modules/
+*.log
+.DS_Store
+# Keep .env tracked — it contains only Proton Pass vault references, not real secrets.
+# Real credentials are injected at runtime via `pass-cli run` (see README.md).

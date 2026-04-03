@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "A tool to extract BPM and song information from Spotify track links",
   "main": "index.js",
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "start": "node index.js",
     "start:op": "pass-cli run --env-file .env -- node index.js",

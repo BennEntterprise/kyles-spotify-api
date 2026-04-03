@@ -92,9 +92,9 @@ async function runTests() {
       const testUrl = 'https://open.spotify.com/track/3fzYU4CkE4pT5oo9GjMlTU?si=efae5ddf0408479b';
       const trackData = await spotify.getTrackData(testUrl);
       
-      if (trackData && trackData.name && typeof trackData.bpm === 'number') {
-        console.log('✅ PASS: API call successful, got track data with BPM');
-        console.log(`   Song: ${trackData.name}, BPM: ${trackData.bpm}`);
+      if (trackData && trackData.name && trackData.artists) {
+        console.log('✅ PASS: API call successful, got track data');
+        console.log(`   Song: ${trackData.name} by ${trackData.artists.join(', ')}`);
         passed++;
       } else {
         console.log('❌ FAIL: API call returned incomplete data');

@@ -79,68 +79,25 @@ class SpotifyAPI {
   }
 
   /**
-   * Get audio features (including BPM/tempo)
-   * @param {string} trackId - Spotify track ID
-   * @returns {Object} - Audio features
-   */
-  async getAudioFeatures(trackId) {
-    const token = await this.getAccessToken();
-    
-    try {
-      const response = await axios.get(`https://api.spotify.com/v1/audio-features/${trackId}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      return response.data;
-    } catch (error) {
-      throw new Error(`Failed to get audio features: ${error.response?.data?.error?.message || error.message}`);
-    }
-  }
-
-  /**
-   * Get comprehensive track information including BPM
+   * Get comprehensive track information
    * @param {string} url - Spotify track URL
-   * @returns {Object} - Complete track information
+   * @returns {Object} - Track information
    */
   async getTrackData(url) {
-    try {
-      const trackId = this.extractTrackId(url);
-      
-      // Get both track info and audio features in parallel
-      const [trackInfo, audioFeatures] = await Promise.all([
-        this.getTrackInfo(trackId),
-        this.getAudioFeatures(trackId)
-      ]);
+    const trackId = this.extractTrackId(url);
+    const trackInfo = await this.getTrackInfo(trackId);
 
-      return {
-        id: trackInfo.id,
-        name: trackInfo.name,
-        artists: trackInfo.artists.map(artist => artist.name),
-        album: trackInfo.album.name,
-        duration_ms: trackInfo.duration_ms,
-        explicit: trackInfo.explicit,
-        popularity: trackInfo.popularity,
-        preview_url: trackInfo.preview_url,
-        external_urls: trackInfo.external_urls,
-        // Audio features
-        bpm: Math.round(audioFeatures.tempo),
-        key: audioFeatures.key,
-        mode: audioFeatures.mode,
-        time_signature: audioFeatures.time_signature,
-        danceability: audioFeatures.danceability,
-        energy: audioFeatures.energy,
-        speechiness: audioFeatures.speechiness,
-        acousticness: audioFeatures.acousticness,
-        instrumentalness: audioFeatures.instrumentalness,
-        liveness: audioFeatures.liveness,
-        valence: audioFeatures.valence,
-        loudness: audioFeatures.loudness
-      };
-    } catch (error) {
-      throw error;
-    }
+    return {
+      id: trackInfo.id,
+      name: trackInfo.name,
+      artists: trackInfo.artists.map(artist => artist.name),
+      album: trackInfo.album.name,
+      duration_ms: trackInfo.duration_ms,
+      explicit: trackInfo.explicit,
+      popularity: trackInfo.popularity,
+      preview_url: trackInfo.preview_url,
+      external_urls: trackInfo.external_urls,
+    };
   }
 }
 

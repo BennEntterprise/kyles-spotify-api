@@ -10,16 +10,6 @@ function formatDuration(durationMs) {
 }
 
 /**
- * Get musical key name from Spotify's key notation
- */
-function getKeyName(key, mode) {
-  const keys = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-  const keyName = keys[key] || 'Unknown';
-  const modeName = mode === 1 ? 'Major' : 'Minor';
-  return `${keyName} ${modeName}`;
-}
-
-/**
  * Main function to process a Spotify track URL
  */
 async function processSpotifyTrack(url) {
@@ -37,22 +27,7 @@ async function processSpotifyTrack(url) {
     console.log(`Duration: ${formatDuration(trackData.duration_ms)}`);
     console.log(`Popularity: ${trackData.popularity}/100`);
     console.log(`Explicit: ${trackData.explicit ? 'Yes' : 'No'}`);
-    
-    console.log('\n=== AUDIO FEATURES ===');
-    console.log(`🎵 BPM (Tempo): ${trackData.bpm}`);
-    console.log(`🎹 Key: ${getKeyName(trackData.key, trackData.mode)}`);
-    console.log(`🎼 Time Signature: ${trackData.time_signature}/4`);
-    
-    console.log('\n=== AUDIO CHARACTERISTICS (0.0 - 1.0) ===');
-    console.log(`💃 Danceability: ${trackData.danceability.toFixed(3)}`);
-    console.log(`⚡ Energy: ${trackData.energy.toFixed(3)}`);
-    console.log(`🎤 Speechiness: ${trackData.speechiness.toFixed(3)}`);
-    console.log(`🎸 Acousticness: ${trackData.acousticness.toFixed(3)}`);
-    console.log(`🎼 Instrumentalness: ${trackData.instrumentalness.toFixed(3)}`);
-    console.log(`🎪 Liveness: ${trackData.liveness.toFixed(3)}`);
-    console.log(`😊 Valence (Positivity): ${trackData.valence.toFixed(3)}`);
-    console.log(`🔊 Loudness: ${trackData.loudness.toFixed(1)} dB`);
-    
+
     if (trackData.preview_url) {
       console.log(`\n🎧 Preview: ${trackData.preview_url}`);
     }
